@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
@@ -18,51 +19,83 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank( message="Le titre est obligatoire.")
+     * @Assert\Length(
+     *     min="4",
+     *     minMessage="Le tire doit faire au minimum {{ limit }} caractères.",
+     *     max="50",
+     *     maxMessage="Le tire doit faire au maximum {{ limit }} caractères."
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank( message="La description' est obligatoire.")
+     * @Assert\Length(
+     *     min="10",
+     *     minMessage="La description doit faire au minimum {{ limit }} caractères.",
+     *     max="500",
+     *     maxMessage="La description doit faire au maximum {{ limit }} caractères."
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Assert\Type(
+     *     "numeric",
+     *     message="Le prix doit être de type numérique."
+     * )
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank( message="Le nom du lieu est obligatoire.")
      */
     private $namePlace;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank( message="L'adresse' est obligatoire.")
      */
     private $address;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Type(
+     *     "numeric",
+     *     message="Le prix doit être de type numérique."
+     * )
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Email(
+     *     message="L'adresse email n'est pas valide."
+     * )
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(
+     *     message="L'adresse URL saisie n'est pas correcte"
+     * )
      */
     private $website;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank( message="La date de début est obligatoire.")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank( message="La date de fin est obligatoire.")
      */
     private $endDate;
 
