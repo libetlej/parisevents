@@ -1,0 +1,13 @@
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img src="{{ event.image }}" class="card-img-top img-fluid" alt="">
+        <div class="card-body">
+            <span class="badge badge-primary mb-2">Exposition</span>
+            <h5 class="card-title"><a href="{{ path('event_show', {'id' : event.id}) }}">{{ event.title }}</a></h5>
+            <p>{{ event.namePlace }}</p>
+            <p>{{ event.startDate | date("d/m/Y", "Europe/Paris") }}</p>
+
+        </div>
+    </div>
+</div>
