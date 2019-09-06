@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Event;
+use App\Form\CommentType;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -47,6 +49,7 @@ class EventController extends AbstractController
     public function create(Request $request, ObjectManager $manager) {
 
         $event = new Event();
+        $user = $this->getUser();
 
         $form = $this->createForm(EventType::class, $event);
 
@@ -54,6 +57,8 @@ class EventController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             //$manager = $this->getDoctrine()->getManager();
+            $event->setUser($user);
+
             $manager->persist($event);
             $manager->flush();
 
@@ -67,6 +72,44 @@ class EventController extends AbstractController
 
 
         return $this->render('event/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Afficher les détails d'un événement
+     *
+     * @Route("/{id}", name="event_show")
+     *
+     * @param Event $event
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @return Response
+     */
+    public function show(Event $event, Request $request, ObjectManager $manager) {
+
+        $user = $this->getUser();
+        $comment = new Comment();
+
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($user);
+            $comment->setEvent($event);
+
+            $manager->persist($comment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Votre commentaire à bien été pris en compte"
+            );
+        }
+
+        return $this->render('event/show.html.twig', [
+            'event' => $event,
             'form' => $form->createView()
         ]);
     }
@@ -104,20 +147,6 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * Afficher les détails d'un événement
-     *
-     * @Route("/{id}", name="event_show")
-     *
-     * @param Event $event
-     * @return Response
-     */
-    public function show(Event $event) {
-
-        return $this->render('event/show.html.twig', [
-            'event' => $event
-        ]);
-    }
 
     /**
      * Supprimer un événement

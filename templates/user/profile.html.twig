@@ -7,8 +7,18 @@
     <div class="container">
         <h2>Profile de {{ user.firstName }} {{ user.lastName | upper }}</h2>
         <img src="{{ user.avatar }}" alt="" class="avatar">
+
+        <div class="row">
+            <div class="col">
+                <h2 class="my-5">Événements publiés par {{ user.FullName }} :</h2>
+
+                    {% for event in user.events %}
+                        {% include 'event/_event.html.twig' %}
+                    {% endfor %}
+
+            </div>
+        </div>
         
     </div>
-
 
 {% endblock %}

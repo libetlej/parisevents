@@ -65,7 +65,7 @@ class AppFixtures extends Fixture
             $categories[] = $category;
         }
 
-        
+
         // Events
 
         for($i = 1; $i <= 20; $i++) {

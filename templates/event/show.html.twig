@@ -120,7 +120,27 @@
                             COMMENTAIRES
                         </h5>
                         <div>
-                            <p>Il n'y a pas encore de commentaires pour cette événement.</p>
+                                {% for comment in event.comments %}
+                                    {% if comment %}
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="card-title">{{ comment.user.firstName }} à dit:</p>
+                                            <p>{{ comment.comment }}</p>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                        <p>Laisser le premier commentaire</p>
+                                    {% endif %}
+                                {% endfor %}
+                            <hr>
+
+                            <div class="card">
+                                {{ form_start(form) }}
+                                {{ form_widget(form) }}
+                                <button class="btn btn-success">envoyer</button>
+                                {{ form_end(form) }}
+                            </div>
+
                         </div>
                     </div>
                 </div>

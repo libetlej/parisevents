@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Event;
 use App\Form\ApplicationType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -13,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class EventType extends ApplicationType
 {
@@ -31,6 +34,19 @@ class EventType extends ApplicationType
             ->add('endDate', DateType::class, $this->getAttribute("Fin de l'événement", ""))
             ->add('image')
             ->add('createdAt')
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Vous n'avez pas séléctionné de catégorie"
+                    ])
+                ],
+                'placeholder' => '',
+                'required' => true,
+                'expanded' => false,
+                'multiple' => false
+            ])
         ;
     }
 
