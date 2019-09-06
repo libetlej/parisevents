@@ -5,17 +5,22 @@
 {% block body %}
     <div class="container">
 
-        <h2 class="my-5 text-center">Ajouter un nouvel événement</h2>
 
         <div class="row">
+
             <div class="col-md-3"></div>
+
             <div class="col-md-6 col-sm-12">
+                <h2 class="my-5 text-center">Ajouter un événement</h2>
+
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
-                <input type="submit" value="ajouter" class="btn btn-primary">
+                <input type="submit" value="ajouter" class="btn btn-success">
                 {{ form_end(form) }}
             </div>
+
             <div class="col-md-3"></div>
+
         </div>
 
     </div>

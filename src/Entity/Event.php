@@ -73,17 +73,13 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Email(
-     *     message="L'adresse email n'est pas valide."
-     * )
+     * @Assert\Email( message="L'adresse email n'est pas valide." )
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Url(
-     *     message="L'adresse URL saisie n'est pas correcte"
-     * )
+     * @Assert\Url( message="L'adresse URL saisie n'est pas correcte" )
      */
     private $website;
 
@@ -108,6 +104,18 @@ class Event
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -254,6 +262,30 @@ class Event
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

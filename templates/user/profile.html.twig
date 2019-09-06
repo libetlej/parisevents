@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition du profile{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h2>Profile de {{ user.firstName }} {{ user.lastName | upper }}</h2>
+        <img src="{{ user.avatar }}" alt="" class="avatar">
+        
+    </div>
+
+
+{% endblock %}

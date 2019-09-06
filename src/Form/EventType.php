@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Event;
-use Symfony\Component\Form\AbstractType;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -14,25 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EventType extends AbstractType
+class EventType extends ApplicationType
 {
-    /**
-     * Configurer le label et le placeholder d'un champ de formulaire
-     *
-     * @param $label
-     * @param $placeholder
-     * @param array $options
-     * @return array
-     */
-    private function getAttribute($label, $placeholder, $options = []) {
-         return array_merge([
-            'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholder
-            ]
-        ], $options);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

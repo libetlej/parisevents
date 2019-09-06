@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition du profile{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h2>Modification du profile</h2>
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
+        {{ form_end(form) }}
+    </div>
+    <a href="{{ path('user_password') }}" class="btn btn-primary">Changer mon mot de passe</a>
+
+{% endblock %}
