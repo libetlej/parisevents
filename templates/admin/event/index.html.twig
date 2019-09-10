@@ -1,0 +1,43 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Événements{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <h2 class="my-5">Événements</h2>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Auteur</th>
+                    <th>Image</th>
+                    <th>Titre</th>
+                    <th class="text-center">Début</th>
+                    <th class="text-center">Fin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                    <tr>
+                        <th>{{ event.id }}</th>
+                        <th>{{ event.user.fullName }}</th>
+                        <th><img src="{{ event.image }}" alt="{{ event.title }}" class="admin-img img-fluid"></th>
+                        <th>{{ event.title }}</th>
+                        <th class="text-center">{{ event.startDate | date("d/m/Y") }}</th>
+                        <th class="text-center">{{ event.endDate | date("d/m/Y") }}</th>
+                        <th>
+                            <a href="{{ path('admin_event_edit', {'id': event.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                            <a href="{{ path('admin_event_delete', {'id': event.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        </th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% set route = 'admin_event_index' %}
+        {{ include('_inc/pagination.html.twig') }}
+
+{% endblock %}

@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Event
 {
@@ -124,9 +125,41 @@ class Event
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Favorite", mappedBy="event", orphanRemoval=true)
+     */
+    private $favorites;
+
+    /**
+     * Permet de savoir si un événement à été rajouté en favoris par un membre
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isFavorite(User $user)
+    {
+        foreach ($this->favorites as $favorite) {
+            if ($favorite->getUser() === $user) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Définir la date de création d'un événement
+     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function prePersist() {
+        if(empty($this->createdAt)) {
+            $this->createdAt = new \DateTime();
+        }
+    }
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -327,6 +360,37 @@ class Event
             // set the owning side to null (unless already changed)
             if ($comment->getEvent() === $this) {
                 $comment->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Favorite[]
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Favorite $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+            $favorite->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Favorite $favorite): self
+    {
+        if ($this->favorites->contains($favorite)) {
+            $this->favorites->removeElement($favorite);
+            // set the owning side to null (unless already changed)
+            if ($favorite->getEvent() === $this) {
+                $favorite->setEvent(null);
             }
         }
 

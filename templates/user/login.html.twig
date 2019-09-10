@@ -3,13 +3,14 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
+
     <div class="container">
         <div class="row">
 
             <div class="col-md-3"></div>
 
-            <div class="col-md-6">
-                <h2 class="my-5">Connexion</h2>
+            <div class="col-md-6 col-sm-12">
+                <h2 class="my-5 text-center">Connexion</h2>
 
                 {% if hasError %}
                     <div class="alert alert-danger">L'identifiant ou le mot de passe saisie est incorrect.</div>
@@ -26,7 +27,7 @@
                                placeholder="mot de passe" required>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-success">Connexion</button>
+                        <button type="submit" class="btn btn-success mt-2">Connexion</button>
                     </div>
                 </form>
             </div>
@@ -35,4 +36,5 @@
 
         </div>
     </div>
+
 {% endblock %}

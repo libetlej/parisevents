@@ -15,6 +15,10 @@
 
             {% endfor %}
         </div>
+
+        {% set route = 'event_index' %}
+        {{ include('_inc/pagination.html.twig') }}
+
     </div>
 
 {% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <h2 class="my-5">Utilisateurs</h2>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Avatar</th>
+                <th>Prenom</th>
+                <th>Nom</th>
+                <th class="text-center">Email</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <th>{{ user.id }}</th>
+                    <th>
+                        <img src="
+                            {% if user.avatar %}
+                                {{ user.avatar }}
+                            {% else %}
+                                {{ asset('img/avatar.jpg') }}
+                            {% endif %}
+                        " alt="" class="avatar avatar-medium">
+                    </th>
+                    <th>{{ user.firstName }}</th>
+                    <th>{{ user.lastName }}</th>
+                    <th class="text-center">{{ user.email }}</th>
+                    <th>
+                        {% if user.id == app.user.id %}
+                        {% else %}
+                            <a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                            <a href="{{ path('admin_user_delete', {'id': user.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        {% endif %}
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% set route = 'admin_user_index' %}
+        {{ include('_inc/pagination.html.twig') }}
+
+    </div>
+
+{% endblock %}

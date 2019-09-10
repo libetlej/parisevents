@@ -1,0 +1,5 @@
+{% if app.user.avatar %}
+    <img src="{{ app.user.avatar }}" class="avatar avatar-mini" alt="Avatar de {{ app.user.fullName }}">
+{% else %}
+    <img src="{{ asset('img/avatar.jpg') }}" class="avatar avatar-mini" alt="Avatar de {{ app.user.fullName }}">
+{% endif %}

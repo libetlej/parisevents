@@ -20,8 +20,8 @@ class RegisterType extends ApplicationType
             ->add('email', EmailType::class, $this->getAttribute("Email", "votre email"))
             ->add('password', PasswordType::class, $this->getAttribute("Mot de passe", "mot de passe"))
             ->add('passwordConfirm', PasswordType::class, $this->getAttribute(
-                "Confirmation de mot de passe",
-                "confirmer le mot de passe"))
+                "Confirmation du mot de passe",
+                "confirmation du mot de passe"))
         ;
     }
 

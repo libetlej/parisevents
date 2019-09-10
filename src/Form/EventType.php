@@ -30,10 +30,10 @@ class EventType extends ApplicationType
             ->add('phone', NumberType::class, $this->getAttribute('Infoline', "Numero de téléphone", ['required' => false]))
             ->add('email', EmailType::class, $this->getAttribute('Email', "Adresse email", ['required' => false]))
             ->add('website', UrlType::class, $this->getAttribute("Site Web","Site Web", ['required' => false]))
-            ->add('startDate', DateType::class, $this->getAttribute("Début de l'événement", ""))
-            ->add('endDate', DateType::class, $this->getAttribute("Fin de l'événement", ""))
+            ->add('startDate', DateType::class, $this->getAttribute("Début de l'événement", "", ["widget" => "single_text"]))
+            ->add('endDate', DateType::class, $this->getAttribute("Fin de l'événement", "", ["widget" => "single_text"]))
             ->add('image')
-            ->add('createdAt')
+            //->add('createdAt')
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',

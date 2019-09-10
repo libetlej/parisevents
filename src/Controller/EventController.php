@@ -4,10 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Event;
+use App\Entity\Favorite;
 use App\Form\CommentType;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Repository\FavoriteRepository;
+use App\Service\Pagination;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,17 +30,23 @@ class EventController extends AbstractController
     /**
      * Afficher tous les événements disponibles
      *
-     * @Route("/", name="event_index")
+     * @Route("/{page<\d+>?1}", name="event_index")
      *
      * @param EventRepository $eventRepository
+     * @param $page
+     * @param Pagination $pagination
      * @return Response
      */
-    public function index(EventRepository $eventRepository)
+    public function index(EventRepository $eventRepository, $page, Pagination $pagination)
     {
-        $events = $eventRepository->findAll();
+        $pagination->setEntityClass(Event::class);
+        $pagination->setLimit(12);
+        $pagination->setCurrentPage($page);
 
         return $this->render('event/index.html.twig', [
-            'events' => $events
+            'events'  => $pagination->getData(),
+            'pages'   => $pagination->getPages(),
+            'page'    => $page
         ]);
     }
 
@@ -43,6 +54,7 @@ class EventController extends AbstractController
      * Créer un événement
      *
      * @Route("/new", name="event_create")
+     * @IsGranted("ROLE_USER")
      *
      * @return Response
      */
@@ -118,9 +130,11 @@ class EventController extends AbstractController
      * Editer un événement
      *
      * @Route("/{id}/edit", name="event_edit")
+     * @Security("is_granted('ROLE_USER') and user === event.getUser()")
      *
      * @param Request $request
      * @param ObjectManager $manager
+     * @param Event $event
      * @return Response
      */
     public function edit(Request $request, ObjectManager $manager, Event $event) {
@@ -152,6 +166,7 @@ class EventController extends AbstractController
      * Supprimer un événement
      *
      * @Route("/{id}/delete", name="event_delete")
+     * @Security("is_granted('ROLE_USER') and user == event.getUser()")
      *
      * @param Event $event
      * @param ObjectManager $manager
@@ -168,6 +183,50 @@ class EventController extends AbstractController
         );
 
         return $this->redirectToRoute('event_index');
+    }
+
+    /**
+     * Ajouter aux favoris un événement
+     *
+     * @Route("/{id}/favorite", name="event_favorite")
+     *
+     */
+    public function favorite(Event $event, ObjectManager $manager, FavoriteRepository $favoriteRepository)
+    {
+        $user = $this->getUser();
+
+        // Si pas connecté
+        if(!$user) return $this->json([
+            'code'    => 403,
+            'message' => 'il faut connexion'
+        ], 403);
+
+        // Si user like
+        if($event->isFavorite($user)) {
+            $favorite = $favoriteRepository->findOneBy([
+                'event' => $event,
+                'user' => $user
+            ]);
+            $manager->remove($favorite);
+            $manager->flush();
+
+            return $this->json([
+                'code'          => 200,
+                'message'       => "Like supprimé",
+            ], 200);
+        }
+
+        // Si user pas de like
+        $favorite = new Favorite();
+        $favorite   ->setEvent($event)
+                    ->setUser($user);
+        $manager->persist($favorite);
+        $manager->flush();
+
+        return $this->json([
+            'code'    => 200,
+            'message' => "Ajouté aux favoris",
+        ], 200);
     }
 
 }

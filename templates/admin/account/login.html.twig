@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Paris Events - Admin</title>
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                height: 100vh;
+            }
+
+            .card {
+                margin-top: 10%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="col-md-4 col-sm-12">
+
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h4 class="card-title">Connexion à l'administration</h4>
+                </div>
+                <div class="card-body">
+
+                    {% if hasError %}
+                        <div class="alert alert-danger">
+                            <p>Les informations fournis sont incorrectes</p>
+                        </div>
+                    {% endif %}
+
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="_username">Emil</label>
+                            <input type="text" class="form-control" placeholder="email" name="_username" value="{{ username }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="_password">Mot de passe</label>
+                            <input type="password" class="form-control" placeholder="mot de passe" name="_password">
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-success">
+                                Connexion
+                            </button>
+                            <a href="{{ path('home') }}" class="btn btn-link float-right">Revenir au site</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>
+
+

@@ -9,16 +9,41 @@
             <div class="col-sm-12 col-md-8">
                 <div class="row">
                     <div class="col-12 my-2">
-                        <img src="{{ event.image }}" alt="" class="img-fluid">
+                        <img src="
+                        {% if event.image %}
+                            {{ event.image }}
+                        {% else %}
+                            {{ asset('img/event.jpg') }}
+                        {% endif %}
+                        " alt="{{ event.title }}" class="img-fluid">
                     </div>
 
                     <div class="col-12 p-2">
 
-                        <span class="badge badge-primary p-1">EXPOSITION</span>
+                        <span class="badge badge-primary p-1">{{ event.category.name | upper }}</span>
+
+                        <a href="{{ path('event_favorite', {'id': event.id}) }}" class="btn btn-link js-like">
+
+                            {% if app.user and event.isFavorite(app.user) %}
+                                <i class="fas fa-heart"></i>
+                            {% else %}
+                                <i class="far fa-heart"></i>
+                            {% endif %}
+
+                            <span class="js-likes">{{ event.favorites | length }}</span>
+                            <span class="js-label">J'aime</span>
+                        </a>
+
+                        {% if app.user and app.user == event.user %}
+                            <a href="{{ path('event_edit', {'id': event.id}) }}" class="btn btn-secondary">Editer l'événement</a>
+                            <a href="{{ path('event_delete', {'id': event.id}) }}" class="btn btn-danger" onclick="return confirm (`Êtes vous sûr de vouloir supprimer l'événement {{ event.title }}?`)">Supprimer l'événement</a>
+                        {% endif %}
 
                         <h2 class="mt-3">{{ event.title | upper }}</h2>
 
-                        <p>Événement publié par <a href="{{ path('user_profile', {'id': event.user.id}) }}">{{ event.user.firstName }} {{ event.user.lastName | upper }}</a> le {{ event.createdAt | date("d/m/Y") }}.</p>
+                        <p>Événement publié par <a
+                                    href="{{ path('user_profile', {'id': event.user.id}) }}">{{ event.user.firstName }} {{ event.user.lastName | upper }}</a>
+                            le {{ event.createdAt | date("d/m/Y") }}.</p>
 
                     </div>
 
@@ -120,24 +145,24 @@
                             COMMENTAIRES
                         </h5>
                         <div>
-                                {% for comment in event.comments %}
-                                    {% if comment %}
+                            {% for comment in event.comments %}
+                                {% if comment %}
                                     <div class="card">
                                         <div class="card-body">
                                             <p class="card-title">{{ comment.user.firstName }} à dit:</p>
                                             <p>{{ comment.comment }}</p>
                                         </div>
                                     </div>
-                                    {% else %}
-                                        <p>Laisser le premier commentaire</p>
-                                    {% endif %}
-                                {% endfor %}
+                                {% else %}
+                                    <p>Laisser le premier commentaire</p>
+                                {% endif %}
+                            {% endfor %}
                             <hr>
 
                             <div class="card">
                                 {{ form_start(form) }}
                                 {{ form_widget(form) }}
-                                <button class="btn btn-success">envoyer</button>
+                                <button class="btn btn-success" id="submit">envoyer</button>
                                 {{ form_end(form) }}
                             </div>
 
@@ -148,7 +173,39 @@
         </div>
     </div>
 
+    <script>
 
+        // Ajouter aux favoris
+        function onClickBtnLike(event) {
+            // annuler evenement par default
+            event.preventDefault();
 
+            const url = this.href;
+            const spanCount = this.querySelector('span.js-likes');
+            const icone = this.querySelector('i');
+
+            axios.get(url).then(function (response) {
+                spanCount.textContent = response.data.likes;
+
+                if (icone.classList.contains('fas')) {
+                    icone.classList.replace('fas', 'far');
+                } else {
+                    icone.classList.replace('far', 'fas');
+                }
+            }).catch(function (error) {
+                if (error.response.status === 403) {
+                    window.alert("Vous devez etre connecté");
+                } else {
+                    window.alert("Une erreure s'est produite");
+                }
+            });
+        }
+
+        document.querySelectorAll('a.js-like').forEach(function (link) {
+            link.addEventListener("click", onClickBtnLike);
+            //console.log(link);
+        })
+
+    </script>
 
 {% endblock %}

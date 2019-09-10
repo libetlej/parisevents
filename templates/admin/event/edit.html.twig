@@ -1,0 +1,60 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edition de l'événement n°{{ event.id }}{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <h2 class="my-5">Edition de l'événement: {{ event.title }}</h2>
+
+        {{ form_start(form) }}
+        
+        <div class="row">
+
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header">Corriger l'annonce</div>
+                    <div class="card-body">
+                        {{ form_widget(form) }}
+                        <button type="submit" class="btn btn-success my-2 float-right">Enregistrer</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header">Les commentaires sur l'événement</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Auteur</th>
+                                    <th>Commentaire</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for comment in event.comments %}
+                                    <tr>
+                                        <td>{{ comment.id }}</td>
+                                        <td>{{ comment.user.fullName }}</td>
+                                        <td>{{ comment.comment }}</td>
+                                        <td>
+                                            <a href="" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                                            <a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

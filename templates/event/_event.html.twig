@@ -1,12 +1,24 @@
 
 <div class="col-md-4">
     <div class="card mb-3">
-        <img src="{{ event.image }}" class="card-img-top img-fluid" alt="">
+
+        <img src="
+        {% if event.image %}
+            {{ event.image }}
+        {% else %}
+            {{ asset('img/event.jpg') }}
+        {% endif %}
+        " class="card-img-top img-fluid" alt="{{ event.title }}">
+
         <div class="card-body">
-            <span class="badge badge-primary mb-2">Exposition</span>
+            <span class="badge badge-primary mb-2">{{ event.category.name | upper }}</span>
             <h5 class="card-title"><a href="{{ path('event_show', {'id' : event.id}) }}">{{ event.title }}</a></h5>
             <p>{{ event.namePlace }}</p>
             <p>{{ event.startDate | date("d/m/Y", "Europe/Paris") }}</p>
+
+            {% if app.user and app.user == event.user %}
+                <a href="{{ path('event_edit', {'id': event.id}) }}" class="btn btn-secondary">Editer l'événement</a>
+            {% endif %}
 
         </div>
     </div>

@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Paris Events - {% block title %}{% endblock %}</title>
+    <title>Paris Events Admin - {% block title %}{% endblock %}</title>
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -15,20 +15,19 @@
     </head>
     <body>
 
-        {% include '_inc/nav.html.twig' %}
+        {% include 'admin/admin_inc/nav.html.twig' %}
 
-        {% include'_inc/flash.html.twig' %}
+        {% include'admin/admin_inc/flash.html.twig' %}
 
         {% block body %}{% endblock %}
 
-        {% include '_inc/footer.html.twig' %}
+        {% include 'admin/admin_inc/footer.html.twig' %}
 
         {% block javascripts %}
             <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
             <script src="{{ asset('js/popper.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.min.js') }}"></script>
             <script src="https://kit.fontawesome.com/fba0522db8.js"></script>
-            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         {% endblock %}
     </body>
 </html>

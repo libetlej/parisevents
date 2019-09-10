@@ -1,0 +1,40 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Commentaires{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <h2 class="my-5">Commentaires</h2>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Auteur</th>
+            <th>Événement</th>
+            <th>Comment</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <th>{{ comment.id }}</th>
+                <th>{{ comment.user.fullName }}</th>
+                <th>{{ comment.event.title }}</th>
+                <th>{{ comment.comment }}</th>
+                <th>
+                    <a href="{{ path('admin_comment_delete', {'id': comment.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                </th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% set route = 'admin_comment_index' %}
+    {{ include('_inc/pagination.html.twig') }}
+
+</div>
+
+{% endblock %}

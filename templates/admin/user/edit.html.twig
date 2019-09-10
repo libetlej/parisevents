@@ -1,0 +1,89 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edition de l'utilisateur {{ user.fullName }}{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <h2 class="my-5">Edition de l'utilisateur {{ user.fullName }}</h2>
+
+        {{ form_start(form) }}
+
+        <div class="row">
+
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header">Editer l'utilisateur</div>
+                    <div class="card-body">
+                        {{ form_widget(form) }}
+                        <button type="submit" class="btn btn-success my-2 float-right">Enregistrer</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header">Ses événements</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Titre</th>
+                                <th class="text-center">Crée le</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in user.events %}
+                                    <tr>
+                                        <td>{{ event.id }}</td>
+                                        <td>{{ event.title }}</td>
+                                        <td class="text-center">{{ event.createdAt | date("d/m/Y") }}</td>
+                                        <td>
+                                            <a href="{{ path('admin_event_edit', {'id': event.id}) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
+                                            <a href="{{ path('admin_event_delete', {'id': event.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header">Ses commentaires</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Événement</th>
+                                <th>Comment</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for comment in user.comments %}
+                                <tr>
+                                    <td>{{ comment.id }}</td>
+                                    <td>{{ comment.event.title }}</td>
+                                    <td>{{ comment.event.comments }}</td>
+                                    <td>
+                                        <a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

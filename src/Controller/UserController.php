@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
+use App\Entity\Favorite;
 use App\Entity\PasswordUpdate;
 use App\Entity\User;
 use App\Form\PasswordUpdateType;
 use App\Form\RegisterType;
 use App\Form\UserType;
+use App\Repository\EventRepository;
+use App\Repository\FavoriteRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,6 +90,7 @@ class UserController extends AbstractController
      * Modification du profile
      *
      * @Route("/user/edit", name="user_edit")
+     * @IsGranted("ROLE_USER")
      *
      * @param Request $request
      * @param ObjectManager $manager
@@ -121,6 +127,7 @@ class UserController extends AbstractController
      * Modification du mot de passe
      *
      * @Route("user/password", name="user_password")
+     * @IsGranted("ROLE_USER")
      *
      * @param Request $request
      * @param ObjectManager$manager
@@ -163,6 +170,29 @@ class UserController extends AbstractController
 
         return $this->render('user/password.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Afficher les événements favoris
+     *
+     * @Route("/user/favorite", name="user_favorite")
+     * @IsGranted("ROLE_USER")
+     *
+     * @param FavoriteRepository $favoriteRepository
+     * @param EventRepository $eventRepository
+     * @return Response
+     */
+    public function userFavorite(FavoriteRepository $favoriteRepository, EventRepository $eventRepository) {
+
+        $user = $this->getUser();
+        $favorites = $favoriteRepository->findBy(array('user' => $user));
+
+        $events = $eventRepository->findBy(['user' => $user]);
+
+        return $this->render('user/favorite.html.twig', [
+            'favorites' => $favorites,
+            'events' => $events
         ]);
     }
 
