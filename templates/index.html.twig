@@ -3,5 +3,34 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+    <div class="container">
 
+        <div class="jumbotron mt-3">
+            <h1 class="display-3">Bienvenu sur Paris Events</h1>
+            <p class="lead">Trouver un événéments</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{{ path('event_index') }}" role="button">Voir nos annonces</a>
+            </p>
+        </div>
+
+        <h2 class="my-3">Aujourd'hui à Paris</h2>
+        <div class="row">
+            {% if currentEvents %}
+                {% for event in currentEvents %}
+                    {% include 'event/_event.html.twig' %}
+                {% endfor %}
+            {% else %}
+                <div class="d-flex justify-content-center">
+                    <p>Aucun événement aujourd'hui.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <h2 class="my-3">les derniers ajoutés</h2>
+        <div class="row">
+            {% for event in newEvents %}
+                {% include 'event/_event.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

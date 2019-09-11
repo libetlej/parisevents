@@ -3,5 +3,155 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
+    <div class="container-fluid">
+
+        <!-- USERS -->
+
+        <div class="row my-3">
+
+            <div class="col-md-4">
+                <div class="card bg-primary text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-users fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                                <h4 class="card-title">
+                                    {{ stats.users }} utilisateurs
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="alert alert-primary">
+                    <h2 class="alert-heading my-3">Les derniers utilisateurs</h2>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nom Complet</th>
+                            <th class="text-center">Événéments</th>
+                            <th class="text-center">Commentaires</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in lasts.lastUsers %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.fullName }}</td>
+                                <td class="text-center">{{ user.events | length }}</td>
+                                <td class="text-center">{{ user.comments | length }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- EVENTS -->
+
+        <div class="row my-3">
+
+            <div class="col-md-4">
+                <div class="card bg-success text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-calendar fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                                <h4 class="card-title">
+                                    {{ stats.events }} événements
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="alert alert-success">
+                    <h2 class="alert-heading my-3">Les derniers événements</h2>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Titre</th>
+                            <th>Auteur</th>
+                            <th class="text-center">Commentaires</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for event in lasts.lastEvents %}
+                            <tr>
+                                <td>{{ event.id }}</td>
+                                <td>{{ event.title }}</td>
+                                <td>{{ event.user.fullName }}</td>
+                                <td class="text-center">{{ event.comments | length }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Comments -->
+
+        <div class="row my-3">
+
+            <div class="col-md-4">
+                <div class="card bg-warning text-white mb-3 text-center">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-comments fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                                <h4 class="card-title">
+                                    {{ stats.comments }} comentaires
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="alert alert-warning">
+                    <h2 class="alert-heading my-3">Les derniers commentaires</h2>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Évenement</th>
+                            <th>Auteur</th>
+                            <th>Commentaire</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for comment in lasts.lastComments %}
+                            <tr>
+                                <td>{{ comment.id }}</td>
+                                <td>{{ comment.event.title }}</td>
+                                <td>{{ comment.user.fullName }}</td>
+                                <td>{{ comment.comment }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 {% endblock %}

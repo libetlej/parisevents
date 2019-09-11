@@ -18,19 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class EventController
- *
- * @Route("/event")
- *
- * @package App\Controller
- */
+
 class EventController extends AbstractController
 {
     /**
      * Afficher tous les événements disponibles
      *
-     * @Route("/{page<\d+>?1}", name="event_index")
+     * @Route("/events/{page<\d+>?1}", name="event_index")
      *
      * @param EventRepository $eventRepository
      * @param $page
@@ -53,7 +47,7 @@ class EventController extends AbstractController
     /**
      * Créer un événement
      *
-     * @Route("/new", name="event_create")
+     * @Route("/event/new", name="event_create")
      * @IsGranted("ROLE_USER")
      *
      * @return Response
@@ -91,7 +85,7 @@ class EventController extends AbstractController
     /**
      * Afficher les détails d'un événement
      *
-     * @Route("/{id}", name="event_show")
+     * @Route("/event/{id}", name="event_show")
      *
      * @param Event $event
      * @param Request $request
@@ -129,7 +123,7 @@ class EventController extends AbstractController
     /**
      * Editer un événement
      *
-     * @Route("/{id}/edit", name="event_edit")
+     * @Route("/event/{id}/edit", name="event_edit")
      * @Security("is_granted('ROLE_USER') and user === event.getUser()")
      *
      * @param Request $request
@@ -165,7 +159,7 @@ class EventController extends AbstractController
     /**
      * Supprimer un événement
      *
-     * @Route("/{id}/delete", name="event_delete")
+     * @Route("/event/{id}/delete", name="event_delete")
      * @Security("is_granted('ROLE_USER') and user == event.getUser()")
      *
      * @param Event $event
@@ -188,7 +182,7 @@ class EventController extends AbstractController
     /**
      * Ajouter aux favoris un événement
      *
-     * @Route("/{id}/favorite", name="event_favorite")
+     * @Route("/event/{id}/favorite", name="event_favorite")
      *
      */
     public function favorite(Event $event, ObjectManager $manager, FavoriteRepository $favoriteRepository)

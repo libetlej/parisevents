@@ -1,4 +1,8 @@
 
+div.container, div.container-fluid {
+    margin-top: 20px;
+}
+
 .avatar {
     max-width: 128px;
     max-height: 128px;
@@ -19,4 +23,8 @@
     max-width: 120px;
     max-height: 120px;
     border-radius: 5%;
+}
+
+footer {
+    font-size: 12px;
 }
