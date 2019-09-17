@@ -4,17 +4,17 @@
 
         <img src="
         {% if event.image %}
-            {{ event.image }}
+            {{ asset('img/events/' ~ event.image) }}
         {% else %}
-            {{ asset('img/event.jpg') }}
+            {{ asset('img/events/event.jpg') }}
         {% endif %}
-        " class="card-img-top img-fluid" alt="{{ event.title }}">
+        " class="card-img-top img-fluid event-img" alt="{{ event.title }}">
 
         <div class="card-body">
             <span class="badge badge-primary mb-2">{{ event.category.name | upper }}</span>
             <h5 class="card-title"><a href="{{ path('event_show', {'id' : event.id}) }}">{{ event.title }}</a></h5>
             <p>{{ event.namePlace }}</p>
-            <p>{{ event.startDate | date("d/m/Y", "Europe/Paris") }}</p>
+            <p>Du {{ event.startDate | date("d/m/Y") }} au {{ event.endDate | date("d/m/Y") }}</p>
 
             {% if app.user and app.user == event.user %}
                 <a href="{{ path('event_edit', {'id': event.id}) }}" class="btn btn-secondary">Editer l'événement</a>

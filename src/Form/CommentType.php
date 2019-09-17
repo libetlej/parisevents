@@ -14,7 +14,7 @@ class CommentType extends ApplicationType
     {
         $builder
             //->add('publishedAt')
-            ->add('comment', TextareaType::class, $this->getAttribute("", "votre commentaire"))
+            ->add('comment', TextareaType::class, $this->getAttribute("Laisser un commentaire", "votre commentaire"))
             //->add('user')
             //->add('event')
         ;

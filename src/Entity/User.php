@@ -133,6 +133,11 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getAvatarFile()
+    {
+        return 'img/users/' . $this->getAvatar();
+    }
+
     public function getAvatar(): ?string
     {
         return $this->avatar;

@@ -80,6 +80,7 @@ class AdminUserController extends AbstractController
      *
      * @param User $user
      * @param ObjectManager $manager
+     * @return Response
      */
     public function delete(User $user, ObjectManager $manager) {
         $manager->remove($user);
@@ -90,6 +91,6 @@ class AdminUserController extends AbstractController
             "L'utilisateur à bien été supprimé."
         );
 
-        $this->redirectToRoute('admin_user_index');
+        return $this->redirectToRoute('admin_user_index');
     }
 }

@@ -92,12 +92,12 @@ class AppFixtures extends Fixture
             $price      = mt_rand(0, 100);
             $namePlace  = $faker->company();
             $address    = $faker->address();
-            $phone      = mt_rand(0, 99);
+            $phone      = mt_rand(0, 9) . mt_rand(0, 99) . mt_rand(0, 99) . mt_rand(0, 99) . mt_rand(0, 99);
             $email      = $faker->companyEmail();
             $website    = 'www.website' . $i . '.com';
             $startDate  = $faker->dateTimeBetween('-1 months');
             $endDate    = $faker->dateTimeBetween($startDate, $interval = '+' . mt_rand(0, 10) . 'days');
-            $image      = $faker->imageUrl();
+            $image      = 'img' . mt_rand(1, 6) . '.jpg';
             $createdAt  = $faker->dateTimeBetween('-2 months');
             // Selectionner au hasard à partir du tableau des users un user
             $user       = $users[mt_rand(0, count($users) - 1)];

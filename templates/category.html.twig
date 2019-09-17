@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h2 class="my-5 text-center">{{ category.name | upper }}</h2>
+        <div class="row">
+            {% for event in category.events %}
+                {{ include('event/_event.html.twig') }}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -3,7 +3,6 @@
 
 namespace App\Service;
 
-
 use Doctrine\Common\Persistence\ObjectManager;
 
 class Pagination

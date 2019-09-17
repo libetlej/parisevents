@@ -42,8 +42,7 @@
                                         <td>{{ comment.user.fullName }}</td>
                                         <td>{{ comment.comment }}</td>
                                         <td>
-                                            <a href="" class="btn btn-primary"><i class="fas fa-eye"></i></a>
-                                            <a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="{{ path('admin_comment_delete', {'id': comment.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 {% endfor %}

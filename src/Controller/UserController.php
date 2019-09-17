@@ -11,6 +11,7 @@ use App\Form\RegisterType;
 use App\Form\UserType;
 use App\Repository\EventRepository;
 use App\Repository\FavoriteRepository;
+use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -94,9 +95,10 @@ class UserController extends AbstractController
      *
      * @param Request $request
      * @param ObjectManager $manager
+     * @param FileUploader $fileUploader
      * @return Response
      */
-    public function edit(Request $request, ObjectManager $manager) {
+    public function edit(Request $request, ObjectManager $manager, FileUploader $fileUploader) {
 
         $user = $this->getUser();
         // recuperer l'utilisateur connecté avec getUser()
@@ -107,6 +109,15 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $avatarFile = $form['avatar']->getData();
+
+            if($avatarFile)
+            {
+                $avatarFileName = $fileUploader->upload($avatarFile);
+                $user->setAvatar($avatarFileName);
+            }
+
             // Il est normalement pas nécessaire de persister une entité qui existe déjà
             $manager->persist($user);
             $manager->flush();

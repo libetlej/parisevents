@@ -287,6 +287,11 @@ class Event
         return $this;
     }
 
+    public function getEventImageFile()
+    {
+        return 'img/events/' . $this->getImage();
+    }
+
     public function getImage(): ?string
     {
         return $this->image;

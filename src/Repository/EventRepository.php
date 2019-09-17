@@ -23,7 +23,7 @@ class EventRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
                     ->select('e')
                     ->orderBy('e.id', 'DESC')
-                    ->setMaxResults(5)
+                    ->setMaxResults(3)
                     ->getQuery()
                     ->getResult();
     }
@@ -31,9 +31,8 @@ class EventRepository extends ServiceEntityRepository
     public function findCurrentEvents() {
         return $this->createQueryBuilder('e')
                     ->select('e')
-                    //->orderBy('e.createdAt', 'DESC')
                     ->where('e.startDate = CURRENT_DATE()')
-                    ->setMaxResults(5)
+                    ->setMaxResults(3)
                     ->getQuery()
                     ->getResult();
     }

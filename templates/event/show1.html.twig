@@ -1,0 +1,231 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+                <div class="row">
+
+                    <div class="col">
+                        <div class="my-2 d-flex justify-content-center">
+                            <img src="
+                            {% if event.image %}
+                                {{ asset('img/events/' ~ event.image) }}
+                            {% else %}
+                                {{ asset('img/events/event.jpg') }}
+                            {% endif %}
+                            " alt="{{ event.title }}" class="img-fluid event-img">
+                        </div>
+
+                        <div class="p-2">
+                            <span class="badge badge-primary p-1">{{ event.category.name | upper }}</span>
+
+                            <a href="{{ path('event_favorite', {'id': event.id}) }}" class="btn btn-link js-like">
+
+                                {% if app.user and event.isFavorite(app.user) %}
+                                    <i class="fas fa-heart"></i>
+                                {% else %}
+                                    <i class="far fa-heart"></i>
+                                {% endif %}
+
+                                <span class="js-likes">{{ event.favorites | length }}</span>
+                                <span class="js-label">J'aime</span>
+                            </a>
+
+                            {% if app.user and app.user == event.user %}
+                                <a href="{{ path('event_edit', {'id': event.id}) }}" class="btn btn-secondary">Editer l'événement</a>
+                                <a href="{{ path('event_delete', {'id': event.id}) }}" class="btn btn-danger" onclick="return confirm (`Êtes vous sûr de vouloir supprimer l'événement {{ event.title }}?`)">Supprimer l'événement</a>
+                            {% endif %}
+
+                            <h2 class="mt-3">{{ event.title | upper }}</h2>
+
+                            <p>Événement publié par <a
+                                        href="{{ path('user_profile', {'id': event.user.id}) }}">{{ event.user.firstName }} {{ event.user.lastName | upper }}</a>
+                                le {{ event.createdAt | date("d/m/Y") }}.</p>
+                        </div>
+                    </div>
+
+
+                    <div>
+
+                        <div class="card bg-light">
+                            <div class="row card-body no-gutters">
+                                <div class="col-1">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <div class="col-11">
+                                    <h5 class="card-title">DATE ET HEURE</h5>
+                                    <p class="card-text">du {{ event.startDate | date("d/m/Y", "Europe/Paris") }} au {{ event.endDate | date("d/m/Y", "Europe/Paris") }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-1">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="col-11">
+                                <h5>
+                                    DATE ET HEURE
+                                </h5>
+                                <p>du {{ event.startDate | date("d/m/Y", "Europe/Paris") }}</p>
+                                <p>au {{ event.endDate | date("d/m/Y", "Europe/Paris") }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-1">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="col-11">
+                                <h5>
+                                    ADRESSE
+                                </h5>
+                                <p>{{ event.namePlace }}</p>
+                                <p>{{ event.address }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-1">
+                                <i class="fas fa-euro-sign"></i>
+                            </div>
+                            <div class="col-11">
+                                <h5>
+                                    TARIF
+                                </h5>
+                                <p>{{ event.price }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-1">
+                                <i class="fas fa-info"></i>
+                            </div>
+                            <div class="col-11">
+                                <h5>
+                                    INFOS
+                                </h5>
+                                <p>{{ event.description }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-1">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="col-11">
+                                <h5>
+                                    TÉLÉPHONE
+                                </h5>
+                                <p>{{ event.phone }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-1">
+                                <i class="fas fa-envelope-open"></i>
+                            </div>
+                            <div class="col-11">
+                                <h5>
+                                    EMAIL
+                                </h5>
+                                <p>{{ event.email }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-1">
+                                <i class="fas fa-chalkboard"></i>
+                            </div>
+                            <div class="col-11">
+                                <h5>
+                                    SITE WEB
+                                </h5>
+                                <p>{{ event.website }}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row mt-4 bg-light">
+                    <div class="col">
+                        <h5>
+                            <i class="fas fa-comments"></i>
+                            COMMENTAIRES
+                        </h5>
+                        <div>
+                            {% for comment in event.comments %}
+                                {% if comment %}
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="card-title">{{ comment.user.firstName }} à dit:</p>
+                                            <p>{{ comment.comment }}</p>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <p>Laisser le premier commentaire</p>
+                                {% endif %}
+                            {% endfor %}
+                            <hr>
+
+                            <div class="card">
+                                {{ form_start(form) }}
+                                {{ form_widget(form) }}
+                                <button class="btn btn-success" id="submit">envoyer</button>
+                                {{ form_end(form) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2"></div>
+
+        </div>
+    </div>
+
+    <script>
+
+        // Ajouter aux favoris
+        function onClickBtnLike(event) {
+            // annuler evenement par default
+            event.preventDefault();
+
+            const url = this.href;
+            const spanCount = this.querySelector('span.js-likes');
+            const icone = this.querySelector('i');
+
+            axios.get(url).then(function (response) {
+                spanCount.textContent = response.data.likes;
+
+                if (icone.classList.contains('fas')) {
+                    icone.classList.replace('fas', 'far');
+                } else {
+                    icone.classList.replace('far', 'fas');
+                }
+            }).catch(function (error) {
+                if (error.response.status === 403) {
+                    window.alert("Vous devez etre connecté");
+                } else {
+                    window.alert("Une erreure s'est produite");
+                }
+            });
+        }
+
+        document.querySelectorAll('a.js-like').forEach(function (link) {
+            link.addEventListener("click", onClickBtnLike);
+            //console.log(link);
+        })
+
+    </script>
+
+{% endblock %}

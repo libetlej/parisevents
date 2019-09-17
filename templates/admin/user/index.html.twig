@@ -25,9 +25,9 @@
                     <th>
                         <img src="
                             {% if user.avatar %}
-                                {{ user.avatar }}
+                                {{ asset(user.avatar) }}
                             {% else %}
-                                {{ asset('img/avatar.jpg') }}
+                                {{ asset('img/users/avatar.jpg') }}
                             {% endif %}
                         " alt="" class="avatar avatar-medium">
                     </th>

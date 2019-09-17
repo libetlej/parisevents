@@ -8,6 +8,7 @@ use App\Form\ApplicationType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class EventType extends ApplicationType
@@ -32,7 +34,16 @@ class EventType extends ApplicationType
             ->add('website', UrlType::class, $this->getAttribute("Site Web","Site Web", ['required' => false]))
             ->add('startDate', DateType::class, $this->getAttribute("Début de l'événement", "", ["widget" => "single_text"]))
             ->add('endDate', DateType::class, $this->getAttribute("Fin de l'événement", "", ["widget" => "single_text"]))
-            ->add('image')
+            ->add('image', FileType::class, [
+                'label' => 'Image',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k'
+                    ])
+                ],
+            ])
             //->add('createdAt')
             ->add('category', EntityType::class, [
                 'class' => Category::class,

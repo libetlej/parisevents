@@ -1,11 +1,11 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Edition de l'utilisateur {{ user.fullName }}{% endblock %}
+{% block title %}{{ user.fullName }}{% endblock %}
 
 {% block body %}
 
     <div class="container-fluid">
-        <h2 class="my-5">Edition de l'utilisateur {{ user.fullName }}</h2>
+        <h2 class="my-5">Edition de l'utilisateur: {{ user.fullName }}</h2>
 
         {{ form_start(form) }}
 

@@ -28,3 +28,11 @@ div.container, div.container-fluid {
 footer {
     font-size: 12px;
 }
+
+.event-img {
+    max-height: 400px;
+}
+
+.logo {
+    max-width: 120px;
+}

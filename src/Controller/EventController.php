@@ -9,11 +9,13 @@ use App\Form\CommentType;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\FavoriteRepository;
+use App\Service\FileUploader;
 use App\Service\Pagination;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,6 +35,8 @@ class EventController extends AbstractController
      */
     public function index(EventRepository $eventRepository, $page, Pagination $pagination)
     {
+        //$this->getDoctrine()->getRepository(EventRepository::class);
+
         $pagination->setEntityClass(Event::class);
         $pagination->setLimit(12);
         $pagination->setCurrentPage($page);
@@ -62,6 +66,30 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            $imageFile = $form['image']->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $originalFilename;
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imageFile->move(
+                        $this->getParameter('events_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $event->setImage($newFilename);
+            }
+
             //$manager = $this->getDoctrine()->getManager();
             $event->setUser($user);
 
@@ -121,6 +149,21 @@ class EventController extends AbstractController
     }
 
     /**
+     * @Route("/comment/{id}/delete", name="comment_delete")
+     *
+     * @param Event $event
+     * @param Comment $comment
+     * @param ObjectManager $manager
+     * @return RedirectResponse
+     */
+    public function deleteComment(Event $event, Comment $comment, ObjectManager $manager) {
+        $manager->remove($comment);
+        $manager->flush();
+
+        return $this->redirectToRoute('event_show', ['id' => $comment->getEvent()->getId()]);
+    }
+
+    /**
      * Editer un événement
      *
      * @Route("/event/{id}/edit", name="event_edit")
@@ -129,15 +172,40 @@ class EventController extends AbstractController
      * @param Request $request
      * @param ObjectManager $manager
      * @param Event $event
+     * @param FileUploader $fileUploader
      * @return Response
      */
-    public function edit(Request $request, ObjectManager $manager, Event $event) {
+    public function edit(Request $request, ObjectManager $manager, Event $event, FileUploader $fileUploader) {
 
         $form = $this->createForm(EventType::class, $event);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            $imageFile = $form['image']->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $originalFilename;
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imageFile->move(
+                        $this->getParameter('events_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $event->setImage($newFilename);
+            }
+
             $manager->persist($event);
             $manager->flush();
 

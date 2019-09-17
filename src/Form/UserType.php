@@ -5,9 +5,11 @@ namespace App\Form;
 use App\Entity\User;
 use App\Form\ApplicationType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 
 class UserType extends ApplicationType
 {
@@ -17,7 +19,14 @@ class UserType extends ApplicationType
             ->add('firstName', TextType::class, $this->getAttribute("Prenom", "prenom"))
             ->add('lastName', TextType::class, $this->getAttribute("Nom", "nom"))
             ->add('email', EmailType::class, $this->getAttribute("Email", "email"))
-            ->add('avatar')
+            ->add('avatar', FileType::class, [
+                'label' => 'Avatar',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Image()
+                ],
+            ])
         ;
     }
 

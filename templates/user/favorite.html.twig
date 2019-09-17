@@ -6,21 +6,24 @@
 
     <div class="container">
 
-                <h2 class="my-5">Favoris</h2>
+        <h2 class="text-center my-5">Vos événements</h2>
+        <div class="row">
+                {% for event in events %}
+                    {% include 'event/_event.html.twig' %}
+                {% else %}
+                     <p>Vous n'avez pas encore publié d'événement.</p>
+                {% endfor %}
+        </div>
+
+        <h2 class="my-5 text-center">Vos favoris</h2>
         <div class="row">
                 {% for favorite in favorites %}
                     {% set event = favorite.event %}
                     {{ include('event/_event.html.twig') }}
+                {% else %}
+                    <p>Vous n'avez pas encore d'événements en favoris.</p>
                 {% endfor %}
         </div>
-
-            <h2>Vos événements</h2>
-        <div class="row">
-                {% for event in events %}
-                    {% include 'event/_event.html.twig' %}
-                {% endfor %}
-        </div>
-
 
     </div>
 

@@ -24,7 +24,15 @@
                     <tr>
                         <th>{{ event.id }}</th>
                         <th>{{ event.user.fullName }}</th>
-                        <th><img src="{{ event.image }}" alt="{{ event.title }}" class="admin-img img-fluid"></th>
+                        <th>
+                            <img src="
+                            {% if event.image %}
+                            {{ asset(event.eventImageFile) }}
+                            {% else %}
+                            {{ asset('img/events/event.jpg') }}
+                            {% endif %}
+                            " alt="{{ event.title }}" class="admin-img img-fluid">
+                        </th>
                         <th>{{ event.title }}</th>
                         <th class="text-center">{{ event.startDate | date("d/m/Y") }}</th>
                         <th class="text-center">{{ event.endDate | date("d/m/Y") }}</th>

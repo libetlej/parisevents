@@ -12,9 +12,9 @@
                         {% if user.avatar %}
                              {{ user.avatar }}
                         {% else %}
-                             {{ asset('img/avatar.jpg') }}
+                             {{ asset('img/users/avatar.jpg') }}
                         {% endif %}
-                            " class="avatar m-3" alt="Avatar de {{ user.fullName }}">
+                        " class="avatar m-3" alt="Avatar de {{ user.fullName }}">
                 </div>
 
                 <h2 class="">{{ user.fullName }}</h2>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="container">
-        <h2 class="my-4">Ces événements :</h2>
+        <h2 class="my-4">Ses événements :</h2>
         <div class="row">
             {% for event in user.events %}
                 {% include 'event/_event.html.twig' %}
