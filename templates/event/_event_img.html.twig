@@ -1,0 +1,5 @@
+{% if event.image %}
+    {{ asset(event.eventImageFile) }}
+{% else %}
+    {{ asset('img/events/event.jpg') }}
+{% endif %}

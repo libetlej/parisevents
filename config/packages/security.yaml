@@ -16,6 +16,7 @@ security:
             security: false
 
         admin:
+            # Tous ce qui commence par admin fait partie du firewall admin
             pattern: ^/admin
             anonymous: true
 

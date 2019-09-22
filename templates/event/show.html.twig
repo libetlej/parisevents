@@ -14,11 +14,7 @@
                 <div class="card my-5">
 
                     <img src="
-                    {% if event.image %}
-                        {{ asset(event.eventImageFile) }}
-                    {% else %}
-                        {{ asset('img/events/event.jpg') }}
-                    {% endif %}
+                    {{ include('event/_event_img.html.twig') }}
                     " alt="{{ event.title }}" class="card-img-top img-fluid">
 
                     <div class="card-body">
@@ -177,14 +173,17 @@
                                     {% for comment in event.comments %}
                                         <div class="card">
                                             <div class="card-body">
-                                                <p class="card-title">{{ comment.user.firstName }} à dit:</p>
-                                                <p>{{ comment.comment }}</p>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="card-title">{{ comment.user.firstName }} à dit:</p>
 
-                                                {% if app.user and  comment.user == app.user %}
-                                                    <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger">
-                                                        <i class="fas fa-trash"></i>
-                                                    </a>
-                                                {% endif %}
+                                                    {% if app.user and  comment.user == app.user %}
+                                                        <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+
+                                                <p>{{ comment.comment }}</p>
 
                                             </div>
                                         </div>

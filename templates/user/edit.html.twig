@@ -8,15 +8,11 @@
         <h2 class="my-5 text-center">Edition du profile</h2>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-2">
                 {{ form_start(form) }}
                     <div class="card">
                         <img src="
-                           {% if app.user.avatar %}
-                               {{ asset(app.user.avatarFile) }}
-                           {% else %}
-                               {{ asset('img/users/avatar.jpg') }}
-                           {% endif %}
+                           {{ include('user/_user_avatar.html.twig') }}
                          " alt="Avatar de {{ app.user.fullName }}" class="p-3 img-fluid card-img">
 
                         <div class="card-body">
@@ -40,8 +36,8 @@
 
         <div class="row my-5">
             <div class="col">
-                <a href="{{ path('user_password') }}" class="btn btn-primary">Changer mon mot de passe</a>
-                <a href="{{ path('user_favorite') }}" class="btn btn-primary">Voir mes événements</a>
+                <a href="{{ path('user_password') }}" class="btn btn-primary mb-2">Changer mon mot de passe</a>
+                <a href="{{ path('user_favorite') }}" class="btn btn-primary mb-2">Voir mes événements</a>
             </div>
         </div>
 

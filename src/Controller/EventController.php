@@ -54,6 +54,8 @@ class EventController extends AbstractController
      * @Route("/event/new", name="event_create")
      * @IsGranted("ROLE_USER")
      *
+     * @param Request $request
+     * @param ObjectManager $manager
      * @return Response
      */
     public function create(Request $request, ObjectManager $manager) {
@@ -71,9 +73,8 @@ class EventController extends AbstractController
 
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $originalFilename;
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                $safeFilename = preg_replace('/[^A-Za-z0-9\-]/', "", $originalFilename);
+                $newFilename = $safeFilename .'-'. uniqid() .'.'. $imageFile->guessExtension();
 
                 // Move the file to the directory where brochures are stored
                 try {
@@ -85,8 +86,6 @@ class EventController extends AbstractController
                     // ... handle exception if something happens during file upload
                 }
 
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
                 $event->setImage($newFilename);
             }
 
@@ -149,7 +148,10 @@ class EventController extends AbstractController
     }
 
     /**
+     * Supprimer un commentaire
+     *
      * @Route("/comment/{id}/delete", name="comment_delete")
+     * @Security("is_granted('ROLE_USER') and user === event.getUser()")
      *
      * @param Event $event
      * @param Comment $comment
@@ -188,7 +190,7 @@ class EventController extends AbstractController
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
-                $safeFilename = $originalFilename;
+                $safeFilename = preg_replace('/[^A-Za-z0-9\-]/', "", $originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
                 // Move the file to the directory where brochures are stored
@@ -236,6 +238,7 @@ class EventController extends AbstractController
      */
     public function delete(Event $event, ObjectManager $manager) {
 
+        unlink($event->getEventImageFile());
         $manager->remove($event);
         $manager->flush();
 

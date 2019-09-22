@@ -83,6 +83,7 @@ class AdminUserController extends AbstractController
      * @return Response
      */
     public function delete(User $user, ObjectManager $manager) {
+        unlink($user->getAvatarFile());
         $manager->remove($user);
         $manager->flush();
 

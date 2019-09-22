@@ -41,13 +41,11 @@ class Comment
 
 
     /**
-     * Callback appelé à chaque fois que l'on crée une réservation
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
     public function prePersist()
     {
-        // Definir la date de création de la reservation
         if (empty($this->publishedAt)) {
             $this->publishedAt = new \DateTime();
         }

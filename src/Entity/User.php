@@ -199,6 +199,8 @@ class User implements UserInterface
             return $role->getTitle();
         })->toArray();
 
+        //dd($roles);
+
         $roles[] = 'ROLE_USER';
 
         return $roles;

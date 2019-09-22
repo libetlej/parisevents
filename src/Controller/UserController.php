@@ -47,6 +47,8 @@ class UserController extends AbstractController
      * Déconnexion
      *
      * @Route("/logout", name="user_logout")
+     *
+     * @return void
      */
     public function logout() {
 
@@ -67,7 +69,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Encoder le mot de passe
+
             $password = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
@@ -88,7 +90,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * Modification du profile
+     * Edition du profile
      *
      * @Route("/user/edit", name="user_edit")
      * @IsGranted("ROLE_USER")
@@ -100,7 +102,6 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, ObjectManager $manager, FileUploader $fileUploader) {
 
-        $user = $this->getUser();
         // recuperer l'utilisateur connecté avec getUser()
         $user = $this->getUser();
 
@@ -159,7 +160,8 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // 1. Vérifier le oldPassword /
             if (!password_verify($passwordUpdate->getOldPassword(), $user->getPassword())) {
-                $form->get('oldPassword')->addError(new FormError("Ancien mot de passe incorrect"));
+                $error = "L'Ancien mot de passe est incorrect";
+                $form->get('oldPassword')->addError(new FormError($error));
             } else {
                 // encoder et enregistrer
                 $newPassword = $passwordUpdate->getNewPassword();

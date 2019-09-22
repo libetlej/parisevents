@@ -1,0 +1,5 @@
+{% if app.user.avatar %}
+    {{ asset(app.user.avatarFile) }}
+{% else %}
+    {{ asset('img/users/avatar.jpg') }}
+{% endif %}

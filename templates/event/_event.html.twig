@@ -4,7 +4,7 @@
 
         <img src="
         {% if event.image %}
-            {{ asset('img/events/' ~ event.image) }}
+            {{ asset(event.eventImageFile) }}
         {% else %}
             {{ asset('img/events/event.jpg') }}
         {% endif %}
